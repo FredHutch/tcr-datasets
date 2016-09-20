@@ -1,4 +1,4 @@
 # pbradley-tcr
 
-TODO: Enter the cookbook description here.
+A web-gateway for the TCR datasets application
 
