@@ -1,6 +1,6 @@
 ---
 driver:
-  name: vagrant
+  name: lxd_cli
 
 provisioner:
   name: chef_zero
