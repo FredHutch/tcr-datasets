@@ -42,5 +42,7 @@ file '/var/spool/tcr_datasets/.ssh/known_hosts' do
 end
 
 execute 'github known_hosts' do
-  command 'ssh-keygen -R github.com ; ssh-keyscan -H github.com >> /var/spool/tcr_datasets/.ssh/known_hosts'
+  command 'ssh-keygen -R github.com ; ' \
+          'ssh-keyscan -H github.com >> ' \
+          '/var/spool/tcr_datasets/.ssh/known_hosts'
 end
