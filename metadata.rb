@@ -5,3 +5,7 @@ license 'all_rights'
 description 'Installs/Configures tcr-datasets'
 long_description 'Installs/Configures tcr-datasets'
 version '0.1.0'
+issues_url 'https://github.com/FredHutch/tcr-datasets/issues'
+source_url 'https://github.com/FredHutch/tcr-datasets'
+
+depends 'chef-vault'

@@ -4,17 +4,27 @@
 #
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 #
-include_recipe 'nginx'
 
-nginx_site 'tcr-datasets' do
-  enable true
-  template 'tcr-datasets.conf.erb'
-  variables(
-    'server_name' => node['tcr-datasets']['server_name'],
-    'ssl_cert' => node['tcr-datasets']['ssl_cert'],
-    'ssl_cert_key' => node['tcr-datasets']['ssl_cert_key'],
-    'logdir' => node['tcr-datasets']['logdir'],
-    'uri' => "#{node['tcr-datasets']['url']}:#{node['tcr-datasets']['port']}"
-  )
+# This deploys the deploy key from an encrypted databag
+
+include_recipe 'chef-vault::default'
+deploy_key = chef_vault_item('tcr-datasets', 'deploy_key')
+
+directory '/tmp/tcr-datasets/.ssh' do
+  owner 'root'
+  recursive true
 end
 
+file '/tmp/tcr-datasets/.ssh/id' do
+  owner 'root'
+  mode '0600'
+  content deploy_key['private_key']
+end
+
+file '/tmp/tcr-datasets/ssh_wrap.sh' do
+  owner 'root'
+  mode '0755'
+  content "#!/usr/bin/env bash\n"\
+          'ssh -o "StrictHostKeyChecking=no" '\
+          '-i "/tmp/tcr-datasets/.ssh/id" $1'
+end
