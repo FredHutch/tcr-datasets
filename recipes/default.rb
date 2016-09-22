@@ -16,3 +16,4 @@ package 'git'
 
 include_recipe 'tcr-datasets::ssh'
 include_recipe 'tcr-datasets::deploy_app'
+include_recipe 'tcr-datasets::configure_nginx'
