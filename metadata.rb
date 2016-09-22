@@ -8,5 +8,6 @@ version '0.1.0'
 issues_url 'https://github.com/FredHutch/tcr-datasets/issues'
 source_url 'https://github.com/FredHutch/tcr-datasets'
 
+depends 'apt'
 depends 'chef-vault'
 depends 'nginx', '~> 2.7.9'
