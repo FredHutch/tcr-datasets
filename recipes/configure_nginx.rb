@@ -29,6 +29,12 @@ directory node['tcr_datasets']['nginx_config']['logdir'] do
   owner 'root'
 end
 
+# This seems necessary on Trusty
+directory '/var/www' do
+  mode 0755
+  owner 'root'
+end
+
 nginx_site 'tcr_datasets' do
   enable true
   template 'tcr_datasets.conf.erb'
@@ -37,7 +43,9 @@ nginx_site 'tcr_datasets' do
     'ssl_cert' => node['tcr_datasets']['nginx_config']['ssl_cert'],
     'ssl_cert_key' => node['tcr_datasets']['nginx_config']['ssl_cert_key'],
     'logdir' => node['tcr_datasets']['nginx_config']['logdir'],
-    'uri' => "#{node['tcr_datasets']['nginx_config']['url']}:#{node['tcr_datasets']['nginx_config']['port']}"
+    'uri' => node['tcr_datasets']['nginx_config']['url'] + ':' + \
+             node['tcr_datasets']['nginx_config']['port']
   )
 end
+
 include_recipe 'nginx'
