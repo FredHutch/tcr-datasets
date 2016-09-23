@@ -5,6 +5,8 @@
 # Copyright (c) 2016 The Authors, All Rights Reserved.
 #
 
+include_recipe 'apt::default'
+
 user 'tcr' do
   comment 'tcr datasets application user'
   shell '/bin/bash'

@@ -1,8 +1,8 @@
 
 node.default['tcr_datasets']['nginx_config'] = {
   'server_name' => node['fqdn'],
-  'ssl_cert' => 'ssl.cert',
-  'ssl_cert_key' => 'ssl.cert.key',
+  'ssl_cert' => '/etc/nginx/ssl.cert',
+  'ssl_cert_key' => '/etc/nginx/ssl.cert.key',
   'logdir' => '/var/log/tcr_datasets',
   'url' => 'http://localhost',
   'port' => '8080'
