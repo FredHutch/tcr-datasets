@@ -1,0 +1,17 @@
+[uwsgi]
+plugins = logfile,python
+
+master = true
+processes = 2
+pp = /opt/tcr_datasets/app
+chdir = /opt/tcr_datasets/app
+wsgi-file = hello.py
+callable = app
+
+socket = /tmp/.uwsgi.hello.sock
+chmod-socket = 660
+uid = www-data
+gid = www-data
+vacuum = true
+
+die-on-term = true
