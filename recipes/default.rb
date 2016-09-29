@@ -14,7 +14,16 @@ user 'tcr' do
   manage_home true
 end
 
-package 'git'
+package [
+  'git',
+  'python-setuptools',
+  'python-virtualenv',
+  'python-flask',
+  'uwsgi',
+  'uwsgi-core',
+  'uwsgi-extra',
+  'uwsgi-plugin-python'
+]
 
 include_recipe 'tcr-datasets::ssh'
 include_recipe 'tcr-datasets::deploy_app'
