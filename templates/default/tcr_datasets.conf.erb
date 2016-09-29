@@ -27,5 +27,8 @@ server {
     proxy_pass  <%= @uri %>;
     proxy_read_timeout  90;
     proxy_redirect  <%= @uri %> https://<%= @server_name %>;
+
+    include uwsgi_params;
+    uwsgi_pass unix:/tmp/.tcr-datasets.sock;
   }
 }

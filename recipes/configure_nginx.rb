@@ -63,6 +63,20 @@ nginx_site 'tcr_datasets' do
   notfies :reload, 'service[nginx]', :delayed
 end
 
+nginx_site 'hello' do
+  enable true
+  template 'hello.conf.erb'
+  variables(
+    'server_name' => node['tcr_datasets']['nginx_config']['server_name'],
+    'ssl_cert' => node['tcr_datasets']['nginx_config']['ssl_cert'],
+    'ssl_cert_key' => node['tcr_datasets']['nginx_config']['ssl_cert_key'],
+    'logdir' => node['tcr_datasets']['nginx_config']['logdir'],
+    'uri' => node['tcr_datasets']['nginx_config']['url'] + ':' + \
+             node['tcr_datasets']['nginx_config']['port']
+  )
+  notfies :reload, 'service[nginx]', :delayed
+end
+
 service 'nginx' do
   action :start
 end

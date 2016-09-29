@@ -1,0 +1,18 @@
+[uwsgi]
+module = wsgi
+plugins = logfile,python
+
+logger = file:/var/log/tcr-datasets.log
+
+master = true
+processes = 2
+chdir = /opt/tcr_datasets
+wsgi_file = hello.py
+
+socket = /tmp/.tcr-datasets.sock
+chmod-socket = 660
+uid = www-data
+gid = www-data
+vacuum = true
+
+die-on-term = true
