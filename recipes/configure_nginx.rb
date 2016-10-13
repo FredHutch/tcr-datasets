@@ -9,7 +9,7 @@
 directory '/var/www' do
   mode 0755
   owner 'root'
-  only_if { node['lsb']['codename'] == 'trusty'}
+  only_if { node['lsb']['codename'] == 'trusty' }
 end
 
 # the default recipe tries to start the process.  If the configuration
