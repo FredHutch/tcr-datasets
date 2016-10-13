@@ -19,9 +19,6 @@ template 'uwsgi configuration' do
   source 'uwsgi.ini.erb'
 end
 
-service 'uwsgi' do
-  action :start
-end
 #
 # Deploy dummy app
 directory "#{node['tcr_datasets']['app']['webroot']}/app" do
@@ -45,4 +42,8 @@ cookbook_file 'hello.py' do
   mode 0755
   owner node['tcr_datasets']['app']['user']
   source 'hello.py'
+end
+
+service 'uwsgi' do
+  action :start
 end
