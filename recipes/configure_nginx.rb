@@ -6,11 +6,10 @@
 
 # Something is broken in trusty- install of the package does
 # not create this directory.
-if node['lsb']['codename'] == 'trusty'
-  directory '/var/www' do
-    mode 0755
-    owner 'root'
-  end
+directory '/var/www' do
+  mode 0755
+  owner 'root'
+  only_if { node['lsb']['codename'] == 'trusty' }
 end
 
 # the default recipe tries to start the process.  If the configuration
@@ -51,21 +50,7 @@ end
 
 nginx_site 'tcr_datasets' do
   enable true
-  template 'tcr_datasets.conf.erb'
-  variables(
-    'server_name' => node['tcr_datasets']['nginx_config']['server_name'],
-    'ssl_cert' => node['tcr_datasets']['nginx_config']['ssl_cert'],
-    'ssl_cert_key' => node['tcr_datasets']['nginx_config']['ssl_cert_key'],
-    'logdir' => node['tcr_datasets']['nginx_config']['logdir'],
-    'uri' => node['tcr_datasets']['nginx_config']['url'] + ':' + \
-             node['tcr_datasets']['nginx_config']['port']
-  )
-  notfies :reload, 'service[nginx]', :delayed
-end
-
-nginx_site 'hello' do
-  enable true
-  template 'hello.conf.erb'
+  template 'nginx/tcr_datasets.conf.erb'
   variables(
     'server_name' => node['tcr_datasets']['nginx_config']['server_name'],
     'ssl_cert' => node['tcr_datasets']['nginx_config']['ssl_cert'],

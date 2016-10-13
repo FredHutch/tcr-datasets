@@ -16,33 +16,20 @@ end
 
 template 'uwsgi configuration' do
   path '/etc/uwsgi/apps-available/tcr_datasets.ini'
-  source 'uwsgi.ini.erb'
+  source 'uwsgi/tcr_datasets.ini.erb'
 end
 
-service 'uwsgi' do
-  action :start
+link 'enable tcr app' do
+  target_file '/etc/uwsgi/apps-enabled/tcr_datasets.ini'
+  to '/etc/uwsgi/apps-available/tcr_datasets.ini'
 end
-#
-# Deploy dummy app
+
 directory "#{node['tcr_datasets']['app']['webroot']}/app" do
   owner node['tcr_datasets']['app']['user']
   mode 0755
   action :create
 end
 
-template 'dummy app configuration' do
-  path '/etc/uwsgi/apps-available/hello.ini'
-  source 'hello.ini.erb'
-end
-
-link 'enable hello app' do
-  target_file '/etc/uwsgi/apps-enabled/hello.ini'
-  to '/etc/uwsgi/apps-available/hello.ini'
-end
-
-cookbook_file 'hello.py' do
-  path "#{node['tcr_datasets']['app']['webroot']}/app/hello.py"
-  mode 0755
-  owner node['tcr_datasets']['app']['user']
-  source 'hello.py'
+service 'uwsgi' do
+  action :start
 end
