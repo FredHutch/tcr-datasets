@@ -1,13 +1,14 @@
 [uwsgi]
-module = wsgi
 plugins = logfile,python
 
-logger = file:/var/log/tcr-datasets.log
+logto = file:/var/log/tcr-datasets.log
 
 master = true
 processes = 2
-chdir = /opt/tcr_datasets
-wsgi_file = hello.py
+pp = /opt/tcr_datasets/current/tcr_scripts/web/datasets
+chdir = /opt/tcr_datasets/current/tcr_scripts/web/datasets
+wsgi-file = datasets.py
+callable = app
 
 socket = /tmp/.tcr-datasets.sock
 chmod-socket = 660
