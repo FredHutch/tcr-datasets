@@ -1,12 +1,12 @@
 [uwsgi]
 plugins = logfile,python
 
-logto = file:/var/log/tcr-datasets.log
+logto = file:/var/log/tcr_datasets/tcr-datasets.log
 
 master = true
 processes = 2
-pp = /opt/tcr_datasets/current/tcr_scripts/web/datasets
-chdir = /opt/tcr_datasets/current/tcr_scripts/web/datasets
+pp = /opt/tcr_datasets/current/web/datasets
+chdir = /opt/tcr_datasets/current/web/datasets
 wsgi-file = datasets.py
 callable = app
 
