@@ -14,16 +14,6 @@ deploy_revision 'tcr_datasets' do
   symlinks.clear
 end
 
-template 'uwsgi configuration' do
-  path '/etc/uwsgi/apps-available/tcr_datasets.ini'
-  source 'uwsgi/tcr_datasets.ini.erb'
-end
-
-link 'enable tcr app' do
-  target_file '/etc/uwsgi/apps-enabled/tcr_datasets.ini'
-  to '/etc/uwsgi/apps-available/tcr_datasets.ini'
-end
-
 directory "#{node['tcr_datasets']['app']['webroot']}/app" do
   owner node['tcr_datasets']['app']['user']
   mode 0755
@@ -31,5 +21,16 @@ directory "#{node['tcr_datasets']['app']['webroot']}/app" do
 end
 
 service 'uwsgi' do
-  action :start
+  action :nothing
+end
+
+template 'uwsgi configuration' do
+  path '/etc/uwsgi/apps-available/tcr_datasets.ini'
+  source 'uwsgi/tcr_datasets.ini.erb'
+  notifies :restart, 'service[uwsgi]', :delayed
+end
+
+link 'enable tcr app' do
+  target_file '/etc/uwsgi/apps-enabled/tcr_datasets.ini'
+  to '/etc/uwsgi/apps-available/tcr_datasets.ini'
 end
