@@ -22,6 +22,9 @@ server {
     proxy_set_header        X-Real-IP $remote_addr;
     proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header        X-Forwarded-Proto $scheme;
+    proxy_pass  http://localhost:8080;
+    proxy_read_timeout  90;
+    proxy_redirect  http:// https://;
 
     include uwsgi_params;
     uwsgi_pass unix:/tmp/.tcr-datasets.sock;
