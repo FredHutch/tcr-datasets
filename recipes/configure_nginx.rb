@@ -12,17 +12,6 @@ directory '/var/www' do
   only_if { node['lsb']['codename'] == 'trusty' }
 end
 
-# the default recipe tries to start the process.  If the configuration
-# is broken it won't start, but neither will it run the remaing recipe to
-# possibly fix the config.  We'll have to do this manually downstream
-# via notify.
-#
-# Meanwhile, override the action in the resource collection and watch it
-# break when we get a 3.x version of the nginx cookbook.
-include_recipe 'nginx'
-r = resources(service: 'nginx')
-r.action 'enable'
-
 include_recipe 'chef-vault::default'
 
 # Load & deploy certificates from vault
@@ -48,9 +37,15 @@ directory node['tcr_datasets']['nginx_config']['logdir'] do
   owner 'root'
 end
 
-nginx_site 'tcr_datasets' do
-  enable true
-  template 'nginx/tcr_datasets.conf.erb'
+service 'nginx' do
+  action :nothing
+end
+
+template '/etc/nginx/sites-available/tcr_datasets' do
+  source 'nginx/tcr_datasets.conf.erb'
+  mode 0755
+  owner 'root'
+  group 'root'
   variables(
     'server_name' => node['tcr_datasets']['nginx_config']['server_name'],
     'ssl_cert' => node['tcr_datasets']['nginx_config']['ssl_cert'],
@@ -59,9 +54,10 @@ nginx_site 'tcr_datasets' do
     'uri' => node['tcr_datasets']['nginx_config']['url'] + ':' + \
              node['tcr_datasets']['nginx_config']['port']
   )
-  notfies :reload, 'service[nginx]', :delayed
+  notifies :restart, 'service[nginx]', :delayed
 end
 
-service 'nginx' do
-  action :start
+nginx_site 'tcr_datasets' do
+  enable true
+  timing :delayed
 end
