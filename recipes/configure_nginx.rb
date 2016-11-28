@@ -6,6 +6,9 @@
 
 # Something is broken in trusty- install of the package does
 # not create this directory.
+
+include_recipe 'nginx::default'
+
 directory '/var/www' do
   mode 0755
   owner 'root'
